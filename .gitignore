@@ -1,0 +1,13 @@
+# hemligheter
+.env
+src_pico/wifi_credentials.json
+
+# python
+__pycache__/
+*.pyc
+.venv/
+uv.lock
+
+# os
+.DS_Store
+.directory
