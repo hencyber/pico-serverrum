@@ -1,0 +1,10 @@
+[project]
+name = "pico-serverrum"
+version = "0.1.0"
+description = "Consumer that reads sensor data from mosquitto and saves it in timescaledb"
+requires-python = ">=3.13"
+dependencies = [
+    "paho-mqtt>=1.6.1,<2.0.0",
+    "psycopg2-binary>=2.9.10",
+    "python-dotenv>=1.1.1",
+]
