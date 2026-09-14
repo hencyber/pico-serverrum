@@ -11,26 +11,29 @@ Ansvarig står inom parentes.
 - Bonus: fler sensorer, till exempel en ljussensor (Alan)
 - Bonus: driftsätta pipelinen i Azure (Salah)
 - Bonus: skicka larm som mejl eller telegram (Henrik)
-- Presentationsbilder (Tarik, Salah)
 - Individuell rapport (alla fyra skriver var sin)
 
 ## To do
 
-- Simulera kretsen i Wokwi (Alan)
-- Koppla DHT11 och två lysdioder på kopplingsdäcket (Henrik)
-- Ladda upp umqtt-biblioteket till Pico:n (Tarik)
-- Publicera mätvärden över MQTT (Henrik)
-- Docker compose med mosquitto, timescaledb och grafana (Salah)
-- Consumer som sparar mätvärdena i TimescaleDB (Tarik)
 - Grafana-dashboard med KPI:er och livegrafer (Salah)
 - Materiallista i Excel med antal prototyper (Alan)
 - README med diagram och instruktioner (Alan)
 - Dokument om hur vi jobbar i gruppen (Alan)
 - Ta skärmbilder till README:n (Alan)
+- Presentationsbilder (Tarik, Salah)
 
 ## In progress
 
-- Sätta upp repo, .gitignore och kanban-tavla (Henrik)
+- Consumer som sparar mätvärdena i TimescaleDB (Tarik)
+- Fixa startordningen, consumern startar före databasen (Salah)
+- DHT11:an svarar inte varje gång och programmet kraschar (Tarik)
 
 ## Done
 
+- Sätta upp repo, .gitignore och kanban-tavla (Henrik)
+- Simulera kretsen i Wokwi (Alan)
+- Koppla DHT11 och två lysdioder på kopplingsdäcket (Henrik)
+- Ladda upp umqtt-biblioteket till Pico:n (Tarik)
+- Publicera mätvärden över MQTT (Henrik)
+- Docker compose med mosquitto, timescaledb och grafana (Salah)
+- Pico:n kom inte in i mosquitto, fixat med egen mosquitto.conf (Salah)
