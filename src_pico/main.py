@@ -55,9 +55,15 @@ if not connect_wifi():
 client = connect_mqtt()
 
 while True:
-    sensor.measure()
-    temperature = sensor.temperature()
-    humidity = sensor.humidity()
+    try:
+        sensor.measure()
+        temperature = sensor.temperature()
+        humidity = sensor.humidity()
+    except OSError:
+        # the dht11 sometimes fails to answer, then we just try again
+        print("Could not read the sensor, trying again")
+        time.sleep(SLEEP_TIME)
+        continue
 
     status = get_status(temperature, humidity)
     show_status(status)
