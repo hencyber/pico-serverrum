@@ -36,7 +36,7 @@
       "title": "Senaste temperatur",
       "description": "Det senaste temperaturvärdet från sensorn i serverrummet.",
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "timescaledb"
       },
       "gridPos": {
@@ -50,7 +50,12 @@
           "refId": "A",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT temperature FROM sensor_readings ORDER BY time DESC LIMIT 1"
+          "rawSql": "SELECT temperature FROM sensor_readings ORDER BY time DESC LIMIT 1",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
@@ -90,7 +95,7 @@
       "title": "Senaste luftfuktighet",
       "description": "Det senaste värdet för relativ luftfuktighet.",
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "timescaledb"
       },
       "gridPos": {
@@ -104,7 +109,12 @@
           "refId": "A",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT humidity FROM sensor_readings ORDER BY time DESC LIMIT 1"
+          "rawSql": "SELECT humidity FROM sensor_readings ORDER BY time DESC LIMIT 1",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
@@ -144,7 +154,7 @@
       "title": "Antal larm senaste timmen",
       "description": "Hur många mätvärden som har status ALARM den senaste timmen.",
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "timescaledb"
       },
       "gridPos": {
@@ -158,7 +168,12 @@
           "refId": "A",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(*) AS larm FROM sensor_readings WHERE status = 'ALARM' AND time > NOW() - INTERVAL '1 hour'"
+          "rawSql": "SELECT COUNT(*) AS larm FROM sensor_readings WHERE status = 'ALARM' AND time > NOW() - INTERVAL '1 hour'",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
@@ -197,7 +212,7 @@
       "title": "Mätvärden senaste minuten",
       "description": "Visar att enheten lever. Med 3 sekunder mellan mätningarna ska det vara ungefär 20 stycken.",
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "timescaledb"
       },
       "gridPos": {
@@ -211,7 +226,12 @@
           "refId": "A",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(*) AS matvarden FROM sensor_readings WHERE time > NOW() - INTERVAL '1 minute'"
+          "rawSql": "SELECT COUNT(*) AS matvarden FROM sensor_readings WHERE time > NOW() - INTERVAL '1 minute'",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
@@ -250,7 +270,7 @@
       "title": "Temperatur över tid",
       "description": "Temperatur i serverrummet med larmgränsen 27 °C utritad.",
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "timescaledb"
       },
       "gridPos": {
@@ -264,7 +284,12 @@
           "refId": "A",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT time AS \"time\", temperature FROM sensor_readings WHERE $__timeFilter(time) ORDER BY time"
+          "rawSql": "SELECT time AS \"time\", temperature FROM sensor_readings WHERE $__timeFilter(time) ORDER BY time",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
@@ -307,7 +332,7 @@
       "title": "Luftfuktighet över tid",
       "description": "Relativ luftfuktighet i serverrummet med larmgränsen 60 % utritad.",
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "timescaledb"
       },
       "gridPos": {
@@ -321,7 +346,12 @@
           "refId": "A",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT time AS \"time\", humidity FROM sensor_readings WHERE $__timeFilter(time) ORDER BY time"
+          "rawSql": "SELECT time AS \"time\", humidity FROM sensor_readings WHERE $__timeFilter(time) ORDER BY time",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
@@ -364,7 +394,7 @@
       "title": "Senaste mätvärdena",
       "description": "De tio senaste mätvärdena som kommit in i databasen.",
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "timescaledb"
       },
       "gridPos": {
@@ -378,7 +408,12 @@
           "refId": "A",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT time, device_id, temperature, humidity, status FROM sensor_readings ORDER BY time DESC LIMIT 10"
+          "rawSql": "SELECT time, device_id, temperature, humidity, status FROM sensor_readings ORDER BY time DESC LIMIT 10",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
