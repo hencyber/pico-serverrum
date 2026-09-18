@@ -108,7 +108,9 @@ I Wokwi finns ingen DHT11 och ingen Mosquitto-broker, så simuleringen använder
 skriver ut mätvärdena i REPL istället för att publicera dem. Logiken för gränsvärden och
 lysdioder är exakt densamma som på riktig hårdvara.
 
-![wokwi](bilder/wokwi.png)
+![wokwi-simuleringen](bilder/wokwi.png)
+
+Simuleringen kör samma logik som den riktiga enheten och skriver ut mätvärdena i konsolen.
 
 ## Så kör man projektet
 
