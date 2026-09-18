@@ -17,7 +17,7 @@ kondens och korrosion på elektroniken. Många mindre företag har ingen överva
 serverrum utan märker problemet först när något har gått sönder.
 
 Vår produkt är en billig sensor-enhet (under 300 kr per styck) som mäter temperatur och
-luftfuktighet var tredje sekund, visar status direkt på plats med en grön och en röd lysdiod,
+luftfuktighet var tredje sekund, visar status direkt på plats med en lysdiod,
 och skickar all data vidare till en dashboard där man kan se historiken och upptäcka trender
 innan det blir ett problem.
 
@@ -28,8 +28,7 @@ innan det blir ett problem.
 | DHT11 (KY-015) data | GP16 |
 | DHT11 VCC | 3V3 |
 | DHT11 GND | GND |
-| Grön lysdiod (OK) | GP15 via 330Ω motstånd |
-| Röd lysdiod (LARM) | GP14 via 330Ω motstånd |
+| Grön lysdiod (status) | GP15 via 330Ω motstånd |
 
 Hela materiallistan med priser och motiveringar finns i [BOM_pico_serverrum.xlsx](BOM_pico_serverrum.xlsx).
 I den filen kan man ändra antalet prototyper i cell B2 så räknas antal komponenter och
@@ -42,7 +41,7 @@ kostnader om automatiskt.
 ```mermaid
 flowchart LR
     A[DHT11-sensor] --> B[Raspberry Pi Pico 2 W<br/>MicroPython]
-    B --> C[Lysdioder<br/>grön = OK, röd = LARM]
+    B --> C[Lysdiod<br/>lyser = OK, blinkar = LARM]
     B -->|MQTT över WiFi| D[Mosquitto<br/>broker]
     D -->|prenumererar| E[Consumer<br/>Python + paho-mqtt]
     E --> F[(TimescaleDB)]
@@ -57,15 +56,15 @@ Allt utom Pico:n körs i Docker-containrar på en laptop.
 flowchart TD
     Start([Start]) --> Wifi[Anslut till WiFi]
     Wifi --> Wifi_ok{Ansluten?}
-    Wifi_ok -->|Nej| Blink[Blinka röd lysdiod och avbryt]
+    Wifi_ok -->|Nej| Blink[Blinka snabbt och avbryt]
     Wifi_ok -->|Ja| Mqtt[Anslut till Mosquitto]
     Mqtt --> Read[Läs temperatur och fuktighet]
     Read --> Error{Gick läsningen bra?}
     Error -->|Nej| Wait[Vänta 3 sekunder]
     Wait --> Read
     Error -->|Ja| Check{Över gränsvärde?}
-    Check -->|Ja| Red[status = ALARM, röd lysdiod]
-    Check -->|Nej| Green[status = OK, grön lysdiod]
+    Check -->|Ja| Red[status = ALARM, lysdioden blinkar]
+    Check -->|Nej| Green[status = OK, lysdioden lyser]
     Red --> Publish[Publicera JSON till MQTT]
     Green --> Publish
     Publish --> Sleep[Vänta 3 sekunder]
@@ -104,7 +103,7 @@ MicroPython-projekt för Pico, klistra in `diagram.json` och `main.py` så går 
 
 I Wokwi finns ingen DHT11 och ingen Mosquitto-broker, så simuleringen använder en DHT22 och
 skriver ut mätvärdena i REPL istället för att publicera dem. Logiken för gränsvärden och
-lysdioder är exakt densamma som på riktig hårdvara.
+lysdioden är exakt densamma som på riktig hårdvara.
 
 ![wokwi](bilder/wokwi.png)
 
@@ -154,6 +153,9 @@ Dashboarden innehåller:
 - Consumern startade snabbare än databasen första gången och kraschade. Vi löste det med en
   `time.sleep(5)` i början och `restart: on-failure` i docker compose.
 - DHT11:an ger bara heltal, så temperaturen hoppar med ett helt grader i taget i grafen.
+- Vi hade planerat en grön och en röd lysdiod, men hade bara en grön hemma. Istället för
+  att vänta på en röd löste vi det i koden: lysdioden lyser fast när allt är OK och blinkar
+  när det är larm. Det syns faktiskt tydligare på håll än två färger.
 
 ## Arbetssätt
 

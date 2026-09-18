@@ -30,7 +30,7 @@ Ansvarig står inom parentes.
 
 - Sätta upp repo, .gitignore och kanban-tavla (Henrik)
 - Simulera kretsen i Wokwi (Alan)
-- Koppla DHT11 och två lysdioder på kopplingsdäcket (Henrik)
+- Koppla DHT11 och statuslysdioden på kopplingsdäcket (Henrik)
 - Ladda upp umqtt-biblioteket till Pico:n (Tarik)
 - Publicera mätvärden över MQTT (Henrik)
 - Docker compose med mosquitto, timescaledb och grafana (Salah)

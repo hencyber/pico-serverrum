@@ -13,29 +13,15 @@
     { "type": "wokwi-dht22", "id": "dht1", "top": -95.7, "left": 158.4, "attrs": {} },
     {
       "type": "wokwi-led",
-      "id": "led_green",
+      "id": "led_status",
       "top": 6,
       "left": 176.6,
       "attrs": { "color": "green" }
     },
     {
-      "type": "wokwi-led",
-      "id": "led_red",
-      "top": 102,
-      "left": 176.6,
-      "attrs": { "color": "red" }
-    },
-    {
       "type": "wokwi-resistor",
       "id": "r1",
       "top": 52.75,
-      "left": 105.6,
-      "attrs": { "value": "330" }
-    },
-    {
-      "type": "wokwi-resistor",
-      "id": "r2",
-      "top": 148.75,
       "left": 105.6,
       "attrs": { "value": "330" }
     }
@@ -45,11 +31,8 @@
     [ "dht1:GND", "pico:GND.5", "black", [ "v-20", "h-60" ] ],
     [ "dht1:SDA", "pico:GP16", "green", [ "v0", "h-40" ] ],
     [ "pico:GP15", "r1:1", "green", [ "v0", "h20" ] ],
-    [ "r1:2", "led_green:A", "green", [ "v0" ] ],
-    [ "led_green:C", "pico:GND.6", "black", [ "v60", "h-160" ] ],
-    [ "pico:GP14", "r2:1", "red", [ "v0", "h20" ] ],
-    [ "r2:2", "led_red:A", "red", [ "v0" ] ],
-    [ "led_red:C", "pico:GND.7", "black", [ "v60", "h-160" ] ]
+    [ "r1:2", "led_status:A", "green", [ "v0" ] ],
+    [ "led_status:C", "pico:GND.6", "black", [ "v60", "h-160" ] ]
   ],
   "dependencies": {}
 }
