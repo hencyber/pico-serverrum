@@ -58,7 +58,11 @@ granska och merga den sedan.
 ## 5. Kvar innan inlämning
 
 - [ ] Ta skärmbilder och lägg i `bilder/` (kopplingen, Wokwi, Grafana med live-data)
-- [ ] Byt `MQTT_BROKER` i `src_pico/main.py` till rätt IP på den dator som kör Docker
+- [ ] Byt `MQTT_BROKER` i `src_pico/main.py` till rätt IP på den dator som kör Docker.
+      IP:n får du fram med `hostname -I` på Linux, `ipconfig` på Windows eller
+      `ipconfig getifaddr en0` på Mac. Pico:n och datorn måste sitta på samma wifi.
+- [ ] Testa pipelinen utan hårdvara med `uv run --with paho-mqtt scripts/testdata.py`
+      om ni vill se att Grafana fungerar innan Pico:n är inkopplad
 - [ ] Skapa `src_pipeline/.env` från `.env.example` med egna lösenord
 - [ ] Skapa `src_pico/wifi_credentials.json` från exempelfilen
 - [ ] Alla fyra skriver sin individuella rapport och exporterar som PDF
