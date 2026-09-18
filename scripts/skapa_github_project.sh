@@ -63,8 +63,14 @@ ISSUES=(
 )
 
 # ------------------------------------------------------------------ projektet
-echo "Skapar projektet \"$PROJEKT_NAMN\"..."
-PROJEKT_NUMMER=$(gh project create --owner "$OWNER" --title "$PROJEKT_NAMN" --format json | jq -r .number)
+echo "Letar efter projektet \"$PROJEKT_NAMN\"..."
+PROJEKT_NUMMER=$(gh project list --owner "$OWNER" --format json \
+  | jq -r --arg namn "$PROJEKT_NAMN" '.projects[] | select(.title == $namn) | .number' | head -1)
+
+if [ -z "$PROJEKT_NUMMER" ]; then
+  echo "Fanns inte, skapar det..."
+  PROJEKT_NUMMER=$(gh project create --owner "$OWNER" --title "$PROJEKT_NAMN" --format json | jq -r .number)
+fi
 PROJEKT_ID=$(gh project view "$PROJEKT_NUMMER" --owner "$OWNER" --format json | jq -r .id)
 echo "Projekt nummer $PROJEKT_NUMMER"
 echo
@@ -78,16 +84,30 @@ hamta_option () {
 }
 
 echo "Skapar issues och lägger dem på tavlan..."
+BEFINTLIGA=$(gh issue list --state all --limit 100 --json title --jq '.[].title')
+
 for rad in "${ISSUES[@]}"; do
   IFS="|" read -r status ansvarig etiketter titel beskrivning <<< "$rad"
+
+  # om issuen redan finns hoppar vi över den, så skriptet går att köra om
+  if grep -Fxq "$titel" <<< "$BEFINTLIGA"; then
+    echo "  finns redan: $titel"
+    continue
+  fi
 
   etikett_flaggor=()
   for etikett in $etiketter; do
     etikett_flaggor+=(--label "$etikett")
   done
 
-  URL=$(gh issue create --title "$titel" --body "$beskrivning" \
-    --assignee "$ansvarig" "${etikett_flaggor[@]}")
+  # ansvarig står alltid i texten, och vi försöker dessutom tilldela issuen.
+  # tilldelning funkar först när personen tackat ja till inbjudan till repot.
+  BODY="$beskrivning
+
+Ansvarig: @$ansvarig"
+
+  URL=$(gh issue create --title "$titel" --body "$BODY" "${etikett_flaggor[@]}")
+  gh issue edit "$URL" --add-assignee "$ansvarig" > /dev/null 2>&1 || true
   echo "  $status: $titel"
 
   ITEM_ID=$(gh project item-add "$PROJEKT_NUMMER" --owner "$OWNER" --url "$URL" --format json | jq -r .id)
@@ -100,8 +120,13 @@ for rad in "${ISSUES[@]}"; do
 
   # stäng de issues som redan är klara
   if [ "$status" = "Done" ]; then
-    gh issue close "$URL" > /dev/null
+    for forsok in 1 2 3; do
+      gh issue close "$URL" > /dev/null 2>&1 && break
+      sleep 3
+    done
   fi
+
+  sleep 1
 done
 
 echo
