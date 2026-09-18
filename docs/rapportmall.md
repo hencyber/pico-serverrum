@@ -1,12 +1,12 @@
 # Mall för den individuella rapporten
 
-Rapporten är **individuell** - alla fyra skriver var sin och lämnar in som PDF. Totalt 2-3
+Rapporten är **individuell**, alla fyra skriver var sin och lämnar in som PDF. Totalt 2-3
 sidor. Den här mallen är bara ett stöd så att vi inte missar något av kraven, skriv med egna
 ord.
 
 ---
 
-## Rubrik: [Produktens namn] - individuell rapport
+## Rubrik: [Produktens namn], individuell rapport
 
 **Namn, klass, datum**
 
@@ -20,7 +20,7 @@ ord.
 
 - Hårdvaran: Pico 2 W, DHT11, lysdioder, motstånd. Varför just de komponenterna?
 - Hur mätvärdena tas fram och vad gränsvärdena är.
-- Pipelinen: Pico → Mosquitto → consumer → TimescaleDB → Grafana. Förklara varför vi går via
+- Pipelinen: Pico till Mosquitto till consumer till TimescaleDB till Grafana. Förklara varför vi går via
   MQTT istället för att skicka direkt till databasen.
 - Varför TimescaleDB och inte vanlig Postgres?
 - Ta med en bild på kopplingen, en på Grafana-dashboarden och gärna arkitekturskissen.
@@ -33,7 +33,7 @@ Välj två eller tre och beskriv vad som hände och hur ni löste det. Exempel f
 - Mosquitto släppte inte in Pico:n (egen mosquitto.conf)
 - consumern startade före databasen (sleep + restart: on-failure)
 
-### 4. Individuell reflektion (1/2 - 1 sida)
+### 4. Individuell reflektion (en halv till en sida)
 
 - Vad har **jag** bidragit med? Var konkret: vilka issues, vilka filer, vilka PR:ar.
 - Vad har de andra tre bidragit med?

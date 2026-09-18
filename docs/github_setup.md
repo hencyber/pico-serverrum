@@ -5,7 +5,7 @@ Så här satte vi upp projektet på GitHub, och vad som är kvar att göra infö
 ## 1. Skapa repot
 
 En av oss skapar ett **publikt** repo på GitHub och lägger till de andra tre som
-collaborators (Settings → Collaborators).
+collaborators under Settings och Collaborators.
 
 ```bash
 git remote add origin https://github.com/<användarnamn>/pico-serverrum.git
@@ -22,9 +22,9 @@ git push -u origin main
 
 ## 2. GitHub Projects
 
-- Gå till repot → fliken **Projects** → **New project** → mallen **Board**.
+- Gå till repot, fliken **Projects**, **New project** och välj mallen **Board**.
 - Skapa kolumnerna `Backlog`, `To do`, `In progress`, `Done`.
-- Bjud in läraren till projektet (Settings → Manage access).
+- Bjud in läraren till projektet under Settings och Manage access.
 
 ## 3. Issues
 
