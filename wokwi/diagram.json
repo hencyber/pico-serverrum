@@ -42,8 +42,8 @@
     {
       "type": "wokwi-dht22",
       "id": "dht1",
-      "top": -390,
-      "left": -190,
+      "top": -330,
+      "left": -120,
       "attrs": {}
     }
   ],
@@ -418,26 +418,29 @@
     ],
     [
       "dht1:VCC",
-      "bb1:5t.d",
+      "pico:3V3",
       "red",
       [
-        "v-20"
+        "v-40",
+        "h60"
       ]
     ],
     [
       "dht1:GND",
-      "bb1:18t.d",
+      "pico:GND.5",
       "black",
       [
-        "v-20"
+        "v-30",
+        "h40"
       ]
     ],
     [
       "dht1:SDA",
-      "bb1:20t.d",
+      "pico:GP16",
       "green",
       [
-        "v-20"
+        "v-20",
+        "h20"
       ]
     ]
   ],

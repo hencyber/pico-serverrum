@@ -5,7 +5,8 @@ from dht import DHT22
 from machine import Pin
 import time
 
-time.sleep(.5)
+# the dht sensor needs a moment after power on before it answers
+time.sleep(2)
 
 sensor = DHT22(Pin(16))
 status_led = Pin(15, Pin.OUT)
