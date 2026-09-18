@@ -34,7 +34,9 @@ Hela materiallistan med priser och motiveringar finns i [BOM_pico_serverrum.xlsx
 I den filen kan man ändra antalet prototyper i cell B2 så räknas antal komponenter och
 kostnader om automatiskt.
 
-![kopplingsschema](bilder/kopplingsschema.png)
+![kopplingen på kopplingsdäcket](bilder/kopplingsschema.jpg)
+
+På bilden lyser statuslysdioden grönt, alltså är klimatet inom gränsvärdena.
 
 ## Arkitektur
 
@@ -105,7 +107,9 @@ I Wokwi finns ingen DHT11 och ingen Mosquitto-broker, så simuleringen använder
 skriver ut mätvärdena i REPL istället för att publicera dem. Logiken för gränsvärden och
 lysdioden är exakt densamma som på riktig hårdvara.
 
-![wokwi](bilder/wokwi.png)
+![wokwi-simuleringen](bilder/wokwi.png)
+
+Simuleringen kör samma logik som den riktiga enheten och skriver ut mätvärdena i konsolen.
 
 ## Så kör man projektet
 
@@ -138,7 +142,7 @@ Gå till <http://localhost:3000> och logga in med användarnamnet och lösenorde
 Datakällan och dashboarden läggs in automatiskt, så dashboarden **piCo -
 Serverrumsövervakning** ska redan finnas där. Den uppdaterar sig själv var femte sekund.
 
-![grafana](bilder/grafana.png)
+![grafana-dashboarden](bilder/grafana.png)
 
 Dashboarden innehåller:
 
