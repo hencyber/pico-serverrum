@@ -148,9 +148,21 @@ Dashboarden innehåller:
 
 - senaste temperatur och senaste luftfuktighet som KPI:er med färg när gränsvärdet passeras
 - antal larm senaste timmen
-- antal mätvärden senaste minuten, så man ser att enheten lever
+- antal mätvärden senaste minuten, som blir röd om enheten slutat höra av sig
 - grafer över temperatur och luftfuktighet som uppdateras live
 - en tabell med de tio senaste mätvärdena
+
+### Varför vi har en panel som räknar mätvärden
+
+De andra panelerna visar det senaste värdet i databasen. Problemet är att ett gammalt värde
+ser precis lika friskt ut som ett färskt. När vi av misstag stoppade programmet på Pico:n
+stod det fortfarande 23 °C och 49 % på dashboarden, fast siffrorna var fem minuter gamla och
+enheten var tyst.
+
+Därför räknar vi hur många mätvärden som kommit in den senaste minuten. Med tre sekunder
+mellan mätningarna ska det vara ungefär tjugo. Blir det noll blir panelen röd, och då vet man
+att det är enheten som tystnat och inte serverrummet som blivit stilla. En dashboard ska
+kunna skilja på "allt är lugnt" och "jag hör ingenting".
 
 ## Problem vi stötte på
 
