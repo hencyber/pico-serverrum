@@ -1,7 +1,10 @@
 # Bilder
 
-Här lägger vi skärmbilderna som används i huvud-README:n.
+Skärmbilder och foton som används i huvud-README:n.
 
-- `kopplingsschema.png` - bild på kopplingen (foto eller skärmbild från Wokwi)
-- `wokwi.png` - skärmbild från simuleringen när den kör
-- `grafana.png` - skärmbild på dashboarden med live-data
+- `kopplingsschema.jpg` - foto på kopplingen med Pico 2 W, DHT11 och statuslysdioden
+- `grafana.png` - dashboarden med live-data från sensorn
+- `wokwi.png` - skärmbild från simuleringen (kvar att ta)
+
+> Tänk på att rensa EXIF-datan från foton innan de läggs upp. Mobilkameror sparar
+> GPS-koordinater i bilden, och repot är publikt.

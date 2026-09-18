@@ -35,7 +35,9 @@ Hela materiallistan med priser och motiveringar finns i [BOM_pico_serverrum.xlsx
 I den filen kan man ändra antalet prototyper i cell B2 så räknas antal komponenter och
 kostnader om automatiskt.
 
-![kopplingsschema](bilder/kopplingsschema.png)
+![kopplingen på kopplingsdäcket](bilder/kopplingsschema.jpg)
+
+På bilden lyser statuslysdioden grönt, alltså är klimatet inom gränsvärdena.
 
 ## Arkitektur
 
@@ -134,7 +136,7 @@ Gå till <http://localhost:3000> och logga in med användarnamnet och lösenorde
 Datakällan och dashboarden läggs in automatiskt, så dashboarden **piCo -
 Serverrumsövervakning** ska redan finnas där. Den uppdaterar sig själv var femte sekund.
 
-![grafana](bilder/grafana.png)
+![grafana-dashboarden](bilder/grafana.png)
 
 Dashboarden innehåller:
 
