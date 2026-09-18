@@ -12,7 +12,7 @@ till det under hela projektet.
 | Salah | [@Salah-Ud-Din01](https://github.com/Salah-Ud-Din01) | Docker, TimescaleDB och Grafana |
 | Alan | [@alanzangana1](https://github.com/alanzangana1) | Wokwi-simulering, BOM och dokumentation |
 
-Vi har huvudansvar men jobbar inte ensamma - alla har varit inne och hjälpt till i varandras
+Vi har huvudansvar men jobbar inte ensamma, alla har varit inne och hjälpt till i varandras
 delar, och vi har parprogrammerat när något har krånglat.
 
 ## Agilt arbetssätt
@@ -27,7 +27,7 @@ delar, och vi har parprogrammerat när något har krånglat.
 
 Vi använder en projektbräda med fyra kolumner:
 
-`Backlog` → `To do` → `In progress` → `Done`
+`Backlog` -> `To do` -> `In progress` -> `Done`
 
 Regler vi kommit överens om:
 
@@ -59,7 +59,7 @@ update readme with grafana screenshot
 
 - Vi följer den stil vi lärt oss i kursen och håller koden enkel och läsbar.
 - Tydliga variabelnamn på engelska i koden, kommentarer och dokumentation på svenska eller
-  engelska - men samma inom en fil.
+  engelska, men samma inom en fil.
 - DRY: upprepar vi oss tre gånger så bryter vi ut det till en funktion.
 - Inga lösenord eller WiFi-uppgifter i repot. De ligger i `.env` och
   `wifi_credentials.json` som båda är i `.gitignore`.

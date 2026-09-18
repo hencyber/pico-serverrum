@@ -1,4 +1,4 @@
-# piCo - Serverrumsvakt 🌡️
+# piCo Serverrumsvakt
 
 Ett projekt i kursen Edge computing. Vi har byggt ett proof of concept åt πCo: en liten
 edge-enhet som övervakar klimatet i ett serverrum och larmar när det blir för varmt eller
@@ -100,7 +100,7 @@ pico-serverrum/
 ## Simulering i Wokwi
 
 Innan vi kopplade upp något på riktigt byggde vi kretsen i
-[Wokwi](https://wokwi.com/). Filerna finns i [wokwi/](wokwi/) - skapa ett nytt
+[Wokwi](https://wokwi.com/). Filerna finns i [wokwi/](wokwi/). Skapa ett nytt
 MicroPython-projekt för Pico, klistra in `diagram.json` och `main.py` så går det att köra.
 
 I Wokwi finns ingen DHT11 och ingen Mosquitto-broker, så simuleringen använder en DHT22 och
@@ -121,7 +121,7 @@ Simuleringen kör samma logik som den riktiga enheten och skriver ut mätvärden
 
    > **Pico 2 W klarar bara 2,4 GHz.** Datorn kan mycket väl sitta på 5 GHz utan att ni
    > tänker på det, och då ser Pico:n inte samma nät fastän det heter likadant. Skriv också
-   > av nätverksnamnet exakt - vår telefons hotspot heter `Slutalåna mobil ` med ett
+   > av nätverksnamnet exakt. Vår telefons hotspot heter `Slutalåna mobil ` med ett
    > mellanslag på slutet, och utan det mellanslaget hittas nätet inte alls.
 3. Ändra `MQTT_BROKER` i `src_pico/main.py` till IP-adressen för datorn som kör Docker.
 4. Ladda upp hela `src_pico/`-mappen till Pico:n med MicroPico i VS Code.
@@ -169,7 +169,7 @@ Dashboarden innehåller:
   redan pågår. Lösningen blev att ge radion 90 sekunder innan vi börjar om.
 - Vi körde först mot hemmanätet, och där tappade Pico:n kontakten hela tiden fast datorn
   stod stabilt. Det visade sig vara att Pico 2 W bara klarar 2,4 GHz medan datorn satt på
-  5 GHz - routern hade samma namn på båda banden, så det syntes inte. Vi flyttade båda till
+  5 GHz. Routern hade samma namn på båda banden, så det syntes inte. Vi flyttade båda till
   en telefon-hotspot istället och då blev det stabilt.
 - Vi hade planerat en grön och en röd lysdiod, men hade bara en grön hemma. Istället för
   att vänta på en röd löste vi det i koden: lysdioden lyser fast när allt är OK och blinkar
