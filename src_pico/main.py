@@ -12,7 +12,7 @@ sensor = DHT11(Pin(16))
 status_led = Pin(15, Pin.OUT)
 
 # our mosquitto broker runs in docker on Henriks laptop
-MQTT_BROKER = "192.168.68.56"
+MQTT_BROKER = "10.90.102.248"
 TOPIC = b"pico/serverroom/dht11"
 DEVICE_ID = "pico-serverroom-01"
 

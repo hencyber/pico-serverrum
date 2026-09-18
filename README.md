@@ -114,6 +114,11 @@ lysdioden är exakt densamma som på riktig hårdvara.
 1. Installera MicroPython på Pico 2 W enligt kursens setup-guide.
 2. Kopiera `src_pico/wifi_credentials.example.json` till `wifi_credentials.json` och fyll i
    ert WiFi. Filen är med i `.gitignore` så lösenordet hamnar aldrig på GitHub.
+
+   > **Pico 2 W klarar bara 2,4 GHz.** Datorn kan mycket väl sitta på 5 GHz utan att ni
+   > tänker på det, och då ser Pico:n inte samma nät fastän det heter likadant. Skriv också
+   > av nätverksnamnet exakt - vår telefons hotspot heter `Slutalåna mobil ` med ett
+   > mellanslag på slutet, och utan det mellanslaget hittas nätet inte alls.
 3. Ändra `MQTT_BROKER` i `src_pico/main.py` till IP-adressen för datorn som kör Docker.
 4. Ladda upp hela `src_pico/`-mappen till Pico:n med MicroPico i VS Code.
 
@@ -158,9 +163,10 @@ Dashboarden innehåller:
   exception och gav upp för gott, så enheten var död tills man körde igång den för hand. Att
   bara försöka om gjorde det värre, för varje nytt `connect_wifi` avbryter den anslutning som
   redan pågår. Lösningen blev att ge radion 90 sekunder innan vi börjar om.
-- Vi kör mot en delad hotspot från en telefon, och den släpper in Pico:n väldigt ojämnt.
-  Ibland går det direkt, ibland måste man öppna hotspot-inställningarna på telefonen igen
-  innan enheten får ansluta. Bra att veta inför demon.
+- Vi körde först mot hemmanätet, och där tappade Pico:n kontakten hela tiden fast datorn
+  stod stabilt. Det visade sig vara att Pico 2 W bara klarar 2,4 GHz medan datorn satt på
+  5 GHz - routern hade samma namn på båda banden, så det syntes inte. Vi flyttade båda till
+  en telefon-hotspot istället och då blev det stabilt.
 - Vi hade planerat en grön och en röd lysdiod, men hade bara en grön hemma. Istället för
   att vänta på en röd löste vi det i koden: lysdioden lyser fast när allt är OK och blinkar
   när det är larm. Det syns faktiskt tydligare på håll än två färger.
