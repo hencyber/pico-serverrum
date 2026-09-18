@@ -58,7 +58,7 @@ Allt utom Pico:n körs i Docker-containrar på en laptop.
 flowchart TD
     Start([Start]) --> Wifi[Anslut till WiFi]
     Wifi --> Wifi_ok{Ansluten?}
-    Wifi_ok -->|Nej| Blink[Blinka snabbt och avbryt]
+    Wifi_ok -->|Nej| Wifi
     Wifi_ok -->|Ja| Mqtt[Anslut till Mosquitto]
     Mqtt --> Read[Läs temperatur och fuktighet]
     Read --> Error{Gick läsningen bra?}
@@ -178,5 +178,4 @@ Dashboarden innehåller:
 ## Arbetssätt
 
 Vi har jobbat med GitHub Projects, issues och branches. Vårt gemensamma arbetssätt finns
-beskrivet i [docs/arbetssatt.md](docs/arbetssatt.md) och läget på uppgifterna i
-[docs/kanban.md](docs/kanban.md).
+beskrivet i [docs/arbetssatt.md](docs/arbetssatt.md).
