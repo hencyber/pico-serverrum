@@ -158,4 +158,5 @@ Dashboarden innehåller:
 ## Arbetssätt
 
 Vi har jobbat med GitHub Projects, issues och branches. Vårt gemensamma arbetssätt finns
-beskrivet i [docs/arbetssatt.md](docs/arbetssatt.md).
+beskrivet i [docs/arbetssatt.md](docs/arbetssatt.md) och läget på uppgifterna i
+[docs/kanban.md](docs/kanban.md).
