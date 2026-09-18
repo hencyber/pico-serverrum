@@ -21,6 +21,9 @@ TEMP_LIMIT = 27
 HUMIDITY_LIMIT = 60
 SLEEP_TIME = 3
 
+# connect_wifi waits two seconds per try, so this is 90 seconds of patience
+WIFI_PATIENCE = 45
+
 
 def get_status(temperature, humidity):
     if temperature > TEMP_LIMIT or humidity > HUMIDITY_LIMIT:
@@ -41,22 +44,40 @@ def show_status(status, seconds):
         status_led.value(0)
 
 
+def blink_while_waiting(times):
+    # fast blinking means that the pico is not connected yet
+    for _ in range(times):
+        status_led.toggle()
+        time.sleep(.2)
+    status_led.value(0)
+
+
+def wait_for_wifi():
+    # after the pico has been powered on the radio can need over a minute to
+    # join. calling connect again too early restarts the whole handshake, so
+    # we give it plenty of time before we try a new round
+    while not connect_wifi(WIFI_PATIENCE):
+        print("Wifi did not answer, trying again")
+        blink_while_waiting(10)
+
+
 def connect_mqtt():
-    client = MQTTClient(client_id=DEVICE_ID, server=MQTT_BROKER, port=1883)
-    client.connect()
-    print("Connected to MQTT")
-    return client
+    while True:
+        try:
+            client = MQTTClient(client_id=DEVICE_ID, server=MQTT_BROKER, port=1883)
+            client.connect()
+            print("Connected to MQTT")
+            return client
+        except OSError as error:
+            # the broker might not be started yet
+            print(f"Could not reach the broker: {error}, trying again")
+            blink_while_waiting(10)
+            wait_for_wifi()
 
 
 status_led.value(0)
 
-if not connect_wifi():
-    # blink fast so we see that something is wrong before we give up
-    for _ in range(10):
-        status_led.toggle()
-        time.sleep(.2)
-    raise Exception("Could not connect to wifi")
-
+wait_for_wifi()
 client = connect_mqtt()
 
 while True:
@@ -79,7 +100,15 @@ while True:
         "status": status,
     }
     payload = json.dumps(data)
-    client.publish(TOPIC, payload)
 
-    print(f"sent: {payload} to mosquitto")
+    try:
+        client.publish(TOPIC, payload)
+        print(f"sent: {payload} to mosquitto")
+    except OSError as error:
+        # the wifi or the broker disappeared, connect again and keep going
+        print(f"Could not send: {error}, reconnecting")
+        wait_for_wifi()
+        client = connect_mqtt()
+        continue
+
     show_status(status, SLEEP_TIME)

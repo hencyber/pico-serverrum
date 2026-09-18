@@ -153,6 +153,14 @@ Dashboarden innehåller:
 - Consumern startade snabbare än databasen första gången och kraschade. Vi löste det med en
   `time.sleep(5)` i början och `restart: on-failure` i docker compose.
 - DHT11:an ger bara heltal, så temperaturen hoppar med ett helt grader i taget i grafen.
+- Den värsta buggen: när Pico:n startar från strömpåslag hinner wifi-radion inte ansluta
+  inom de 20 sekunder kurskodens `connect_wifi` väntar. Vår första version kastade då ett
+  exception och gav upp för gott, så enheten var död tills man körde igång den för hand. Att
+  bara försöka om gjorde det värre, för varje nytt `connect_wifi` avbryter den anslutning som
+  redan pågår. Lösningen blev att ge radion 90 sekunder innan vi börjar om.
+- Vi kör mot en delad hotspot från en telefon, och den släpper in Pico:n väldigt ojämnt.
+  Ibland går det direkt, ibland måste man öppna hotspot-inställningarna på telefonen igen
+  innan enheten får ansluta. Bra att veta inför demon.
 - Vi hade planerat en grön och en röd lysdiod, men hade bara en grön hemma. Istället för
   att vänta på en röd löste vi det i koden: lysdioden lyser fast när allt är OK och blinkar
   när det är larm. Det syns faktiskt tydligare på håll än två färger.
