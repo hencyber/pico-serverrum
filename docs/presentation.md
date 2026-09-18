@@ -28,8 +28,8 @@ Ta gärna med en siffra eller ett exempel som gör det konkret.
 ## Bild 3 - Vad vi byggde (Alan, 1 min)
 
 - Bild på den färdiga enheten
-- Pico 2 W med en DHT11-sensor och två lysdioder
-- Mäter var tredje sekund, grön lysdiod = OK, röd = larm
+- Pico 2 W med en DHT11-sensor och en statuslysdiod
+- Mäter var tredje sekund, lysdioden lyser när allt är OK och blinkar vid larm
 - Larmgränser: 27 °C och 60 % luftfuktighet, och varför vi valde just dem
 
 ## Bild 4 - Arkitektur (Tarik, 2 min)
@@ -51,9 +51,9 @@ går inte förlorade om consumern startar om.
 
 Det här är det viktigaste. Öva på det innan.
 
-1. Visa enheten med grön lysdiod och Grafana bredvid som uppdaterar sig
+1. Visa enheten med lysdioden lysande och Grafana bredvid som uppdaterar sig
 2. Värm sensorn med handen eller andas på den
-3. Visa hur temperaturen stiger i grafen, hur KPI:n blir röd och lysdioden slår om
+3. Visa hur temperaturen stiger i grafen, hur KPI:n blir röd och lysdioden börjar blinka
 4. Visa tabellen med de senaste mätvärdena
 
 > Ha en plan B: om wifi eller hårdvaran krånglar, kör
@@ -64,7 +64,7 @@ Det här är det viktigaste. Öva på det innan.
 
 Visa två saker, inte mer:
 
-- Loopen i `src_pico/main.py`: mät, sätt status, tänd lysdiod, publicera
+- Loopen i `src_pico/main.py`: mät, sätt status, publicera, visa status med lysdioden
 - `on_message` i `consumer.py`: ta emot, packa upp JSON, skriv till databasen
 
 Gå inte in i detaljer. Det räcker att visa att det är enkelt och läsbart.
