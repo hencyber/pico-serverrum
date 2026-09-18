@@ -2,35 +2,61 @@
   "uid": "pico-serverrum",
   "title": "piCo - Serverrumsövervakning",
   "description": "Live-övervakning av temperatur och luftfuktighet i serverrummet. Data kommer från en Raspberry Pi Pico 2 W med en DHT11-sensor via Mosquitto och TimescaleDB.",
-  "tags": ["pico", "iot", "serverrum"],
+  "tags": [
+    "pico",
+    "iot",
+    "serverrum"
+  ],
   "timezone": "browser",
   "editable": true,
-  "schemaVersion": 39,
+  "schemaVersion": 41,
   "version": 1,
   "refresh": "5s",
-  "time": { "from": "now-30m", "to": "now" },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
   "panels": [
     {
       "type": "text",
       "title": "Om produkten",
-      "gridPos": { "h": 4, "w": 24, "x": 0, "y": 0 },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
       "options": {
         "mode": "markdown",
-        "content": "**piCo Serverrumsvakt** - en edge-enhet (Raspberry Pi Pico 2 W + DHT11) mäter temperatur och luftfuktighet var tredje sekund och skickar mätvärdena över MQTT.\n\nLarmgränser: **temperatur > 27 °C** eller **luftfuktighet > 60 %**. När en gräns överskrids tänds den röda lysdioden på enheten och status sätts till ALARM.\n\nGrupp: Henrik, Tarik, Salah och Alan."
-      }
+        "content": "**piCo Serverrumsvakt** - en edge-enhet (Raspberry Pi Pico 2 W + DHT11) mäter temperatur och luftfuktighet var tredje sekund och skickar mätvärdena över MQTT.\n\nLarmgränser: **temperatur > 27 °C** eller **luftfuktighet > 60 %**. När en gräns överskrids börjar lysdioden på enheten blinka och status sätts till ALARM.\n\nGrupp: Henrik, Tarik, Salah och Alan."
+      },
+      "id": 1
     },
     {
       "type": "stat",
       "title": "Senaste temperatur",
       "description": "Det senaste temperaturvärdet från sensorn i serverrummet.",
-      "datasource": { "type": "postgres", "uid": "timescaledb" },
-      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 4 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "timescaledb"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 4
+      },
       "targets": [
         {
           "refId": "A",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT temperature FROM sensor_readings ORDER BY time DESC LIMIT 1"
+          "rawSql": "SELECT temperature FROM sensor_readings ORDER BY time DESC LIMIT 1",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
@@ -40,8 +66,14 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "red", "value": 27 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 27
+              }
             ]
           }
         },
@@ -50,32 +82,59 @@
       "options": {
         "colorMode": "background",
         "graphMode": "area",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
-      }
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "id": 2,
+      "pluginVersion": "13.2.2"
     },
     {
       "type": "stat",
       "title": "Senaste luftfuktighet",
       "description": "Det senaste värdet för relativ luftfuktighet.",
-      "datasource": { "type": "postgres", "uid": "timescaledb" },
-      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 4 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "timescaledb"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 6,
+        "y": 4
+      },
       "targets": [
         {
           "refId": "A",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT humidity FROM sensor_readings ORDER BY time DESC LIMIT 1"
+          "rawSql": "SELECT humidity FROM sensor_readings ORDER BY time DESC LIMIT 1",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "unit": "humidity",
+          "unit": "percent",
           "decimals": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "red", "value": 60 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 60
+              }
             ]
           }
         },
@@ -84,21 +143,42 @@
       "options": {
         "colorMode": "background",
         "graphMode": "area",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
-      }
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "id": 3,
+      "pluginVersion": "13.2.2"
     },
     {
       "type": "stat",
       "title": "Antal larm senaste timmen",
       "description": "Hur många mätvärden som har status ALARM den senaste timmen.",
-      "datasource": { "type": "postgres", "uid": "timescaledb" },
-      "gridPos": { "h": 5, "w": 6, "x": 12, "y": 4 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "timescaledb"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 12,
+        "y": 4
+      },
       "targets": [
         {
           "refId": "A",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(*) AS larm FROM sensor_readings WHERE status = 'ALARM' AND time > NOW() - INTERVAL '1 hour'"
+          "rawSql": "SELECT COUNT(*) AS larm FROM sensor_readings WHERE status = 'ALARM' AND time > NOW() - INTERVAL '1 hour'",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
@@ -107,8 +187,14 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "red", "value": 1 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
             ]
           }
         },
@@ -117,21 +203,42 @@
       "options": {
         "colorMode": "background",
         "graphMode": "none",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
-      }
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "id": 4,
+      "pluginVersion": "13.2.2"
     },
     {
       "type": "stat",
       "title": "Mätvärden senaste minuten",
       "description": "Visar att enheten lever. Med 3 sekunder mellan mätningarna ska det vara ungefär 20 stycken.",
-      "datasource": { "type": "postgres", "uid": "timescaledb" },
-      "gridPos": { "h": 5, "w": 6, "x": 18, "y": 4 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "timescaledb"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 4
+      },
       "targets": [
         {
           "refId": "A",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(*) AS matvarden FROM sensor_readings WHERE time > NOW() - INTERVAL '1 minute'"
+          "rawSql": "SELECT COUNT(*) AS matvarden FROM sensor_readings WHERE time > NOW() - INTERVAL '1 minute'",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
@@ -140,8 +247,14 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "red", "value": null },
-              { "color": "green", "value": 1 }
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
             ]
           }
         },
@@ -150,91 +263,190 @@
       "options": {
         "colorMode": "background",
         "graphMode": "none",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
-      }
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "id": 5,
+      "pluginVersion": "13.2.2"
     },
     {
       "type": "timeseries",
       "title": "Temperatur över tid",
       "description": "Temperatur i serverrummet med larmgränsen 27 °C utritad.",
-      "datasource": { "type": "postgres", "uid": "timescaledb" },
-      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 9 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "timescaledb"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
       "targets": [
         {
           "refId": "A",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT time AS \"time\", temperature FROM sensor_readings WHERE $__timeFilter(time) ORDER BY time"
+          "rawSql": "SELECT time AS \"time\", temperature FROM sensor_readings WHERE $__timeFilter(time) ORDER BY time",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
         "defaults": {
           "unit": "celsius",
-          "custom": { "lineWidth": 2, "fillOpacity": 10 },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "red", "value": 27 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 27
+              }
             ]
           }
         },
         "overrides": []
       },
       "options": {
-        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
-        "tooltip": { "mode": "single", "sort": "none" }
-      }
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "id": 6,
+      "pluginVersion": "13.2.2"
     },
     {
       "type": "timeseries",
       "title": "Luftfuktighet över tid",
       "description": "Relativ luftfuktighet i serverrummet med larmgränsen 60 % utritad.",
-      "datasource": { "type": "postgres", "uid": "timescaledb" },
-      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 9 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "timescaledb"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
       "targets": [
         {
           "refId": "A",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT time AS \"time\", humidity FROM sensor_readings WHERE $__timeFilter(time) ORDER BY time"
+          "rawSql": "SELECT time AS \"time\", humidity FROM sensor_readings WHERE $__timeFilter(time) ORDER BY time",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "unit": "humidity",
-          "custom": { "lineWidth": 2, "fillOpacity": 10 },
+          "unit": "percent",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "red", "value": 60 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 60
+              }
             ]
           }
         },
         "overrides": []
       },
       "options": {
-        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
-        "tooltip": { "mode": "single", "sort": "none" }
-      }
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "id": 7,
+      "pluginVersion": "13.2.2"
     },
     {
       "type": "table",
       "title": "Senaste mätvärdena",
       "description": "De tio senaste mätvärdena som kommit in i databasen.",
-      "datasource": { "type": "postgres", "uid": "timescaledb" },
-      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 18 },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "timescaledb"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
       "targets": [
         {
           "refId": "A",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT time, device_id, temperature, humidity, status FROM sensor_readings ORDER BY time DESC LIMIT 10"
+          "rawSql": "SELECT time, device_id, temperature, humidity, status FROM sensor_readings ORDER BY time DESC LIMIT 10",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "timescaledb"
+          },
+          "editorMode": "code"
         }
       ],
-      "fieldConfig": { "defaults": {}, "overrides": [] },
-      "options": { "showHeader": true }
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true
+      },
+      "id": 8,
+      "pluginVersion": "13.2.2"
     }
-  ]
+  ],
+  "annotations": {
+    "list": []
+  },
+  "templating": {
+    "list": []
+  },
+  "timepicker": {},
+  "links": [],
+  "id": null
 }

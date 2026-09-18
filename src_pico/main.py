@@ -9,11 +9,10 @@ time.sleep(.5)
 
 # hardware
 sensor = DHT11(Pin(16))
-green_led = Pin(15, Pin.OUT)
-red_led = Pin(14, Pin.OUT)
+status_led = Pin(15, Pin.OUT)
 
 # our mosquitto broker runs in docker on Henriks laptop
-MQTT_BROKER = "192.168.1.141"
+MQTT_BROKER = "10.90.102.248"
 TOPIC = b"pico/serverroom/dht11"
 DEVICE_ID = "pico-serverroom-01"
 
@@ -22,6 +21,9 @@ TEMP_LIMIT = 27
 HUMIDITY_LIMIT = 60
 SLEEP_TIME = 3
 
+# connect_wifi waits two seconds per try, so this is 90 seconds of patience
+WIFI_PATIENCE = 45
+
 
 def get_status(temperature, humidity):
     if temperature > TEMP_LIMIT or humidity > HUMIDITY_LIMIT:
@@ -29,29 +31,53 @@ def get_status(temperature, humidity):
     return "OK"
 
 
-def show_status(status):
-    # green led when everything is fine, red led when it is not
-    green_led.value(1 if status == "OK" else 0)
-    red_led.value(1 if status == "ALARM" else 0)
+def show_status(status, seconds):
+    # we only have one led, so it shines when everything is ok and blinks
+    # when there is an alarm. it also does the waiting between the readings
+    if status == "OK":
+        status_led.value(1)
+        time.sleep(seconds)
+    else:
+        for _ in range(int(seconds * 4)):
+            status_led.toggle()
+            time.sleep(.25)
+        status_led.value(0)
+
+
+def blink_while_waiting(times):
+    # fast blinking means that the pico is not connected yet
+    for _ in range(times):
+        status_led.toggle()
+        time.sleep(.2)
+    status_led.value(0)
+
+
+def wait_for_wifi():
+    # after the pico has been powered on the radio can need over a minute to
+    # join. calling connect again too early restarts the whole handshake, so
+    # we give it plenty of time before we try a new round
+    while not connect_wifi(WIFI_PATIENCE):
+        print("Wifi did not answer, trying again")
+        blink_while_waiting(10)
 
 
 def connect_mqtt():
-    client = MQTTClient(client_id=DEVICE_ID, server=MQTT_BROKER, port=1883)
-    client.connect()
-    print("Connected to MQTT")
-    return client
+    while True:
+        try:
+            client = MQTTClient(client_id=DEVICE_ID, server=MQTT_BROKER, port=1883)
+            client.connect()
+            print("Connected to MQTT")
+            return client
+        except OSError as error:
+            # the broker might not be started yet
+            print(f"Could not reach the broker: {error}, trying again")
+            blink_while_waiting(10)
+            wait_for_wifi()
 
 
-green_led.value(0)
-red_led.value(0)
+status_led.value(0)
 
-if not connect_wifi():
-    # blink red led so we see that something is wrong before we give up
-    for _ in range(5):
-        red_led.toggle()
-        time.sleep(.5)
-    raise Exception("Could not connect to wifi")
-
+wait_for_wifi()
 client = connect_mqtt()
 
 while True:
@@ -66,7 +92,6 @@ while True:
         continue
 
     status = get_status(temperature, humidity)
-    show_status(status)
 
     data = {
         "device_id": DEVICE_ID,
@@ -75,7 +100,15 @@ while True:
         "status": status,
     }
     payload = json.dumps(data)
-    client.publish(TOPIC, payload)
 
-    print(f"sent: {payload} to mosquitto")
-    time.sleep(SLEEP_TIME)
+    try:
+        client.publish(TOPIC, payload)
+        print(f"sent: {payload} to mosquitto")
+    except OSError as error:
+        # the wifi or the broker disappeared, connect again and keep going
+        print(f"Could not send: {error}, reconnecting")
+        wait_for_wifi()
+        client = connect_mqtt()
+        continue
+
+    show_status(status, SLEEP_TIME)
