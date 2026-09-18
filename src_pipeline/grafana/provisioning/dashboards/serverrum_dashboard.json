@@ -9,7 +9,7 @@
   ],
   "timezone": "browser",
   "editable": true,
-  "schemaVersion": 39,
+  "schemaVersion": 41,
   "version": 1,
   "refresh": "5s",
   "time": {
@@ -29,7 +29,8 @@
       "options": {
         "mode": "markdown",
         "content": "**piCo Serverrumsvakt** - en edge-enhet (Raspberry Pi Pico 2 W + DHT11) mäter temperatur och luftfuktighet var tredje sekund och skickar mätvärdena över MQTT.\n\nLarmgränser: **temperatur > 27 °C** eller **luftfuktighet > 60 %**. När en gräns överskrids börjar lysdioden på enheten blinka och status sätts till ALARM.\n\nGrupp: Henrik, Tarik, Salah och Alan."
-      }
+      },
+      "id": 1
     },
     {
       "type": "stat",
@@ -88,7 +89,9 @@
           "fields": "",
           "values": false
         }
-      }
+      },
+      "id": 2,
+      "pluginVersion": "13.2.2"
     },
     {
       "type": "stat",
@@ -147,7 +150,9 @@
           "fields": "",
           "values": false
         }
-      }
+      },
+      "id": 3,
+      "pluginVersion": "13.2.2"
     },
     {
       "type": "stat",
@@ -205,7 +210,9 @@
           "fields": "",
           "values": false
         }
-      }
+      },
+      "id": 4,
+      "pluginVersion": "13.2.2"
     },
     {
       "type": "stat",
@@ -263,7 +270,9 @@
           "fields": "",
           "values": false
         }
-      }
+      },
+      "id": 5,
+      "pluginVersion": "13.2.2"
     },
     {
       "type": "timeseries",
@@ -325,7 +334,9 @@
           "mode": "single",
           "sort": "none"
         }
-      }
+      },
+      "id": 6,
+      "pluginVersion": "13.2.2"
     },
     {
       "type": "timeseries",
@@ -387,7 +398,9 @@
           "mode": "single",
           "sort": "none"
         }
-      }
+      },
+      "id": 7,
+      "pluginVersion": "13.2.2"
     },
     {
       "type": "table",
@@ -422,7 +435,18 @@
       },
       "options": {
         "showHeader": true
-      }
+      },
+      "id": 8,
+      "pluginVersion": "13.2.2"
     }
-  ]
+  ],
+  "annotations": {
+    "list": []
+  },
+  "templating": {
+    "list": []
+  },
+  "timepicker": {},
+  "links": [],
+  "id": null
 }
