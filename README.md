@@ -16,7 +16,7 @@ prestandan och i värsta fall stängs de av. Blir luftfuktigheten för hög risk
 kondens och korrosion på elektroniken. Många mindre företag har ingen övervakning alls i sina
 serverrum utan märker problemet först när något har gått sönder.
 
-Vår produkt är en billig sensor-enhet (under 300 kr per styck) som mäter temperatur och
+Vår produkt är en billig sensor-enhet (568 kr för vår prototyp) som mäter temperatur och
 luftfuktighet var tredje sekund, visar status direkt på plats med en lysdiod,
 och skickar all data vidare till en dashboard där man kan se historiken och upptäcka trender
 innan det blir ett problem.
@@ -32,7 +32,11 @@ innan det blir ett problem.
 
 Hela materiallistan med priser och motiveringar finns i [BOM_pico_serverrum.xlsx](BOM_pico_serverrum.xlsx).
 I den filen kan man ändra antalet prototyper i cell B2 så räknas antal komponenter och
-kostnader om automatiskt.
+kostnader om automatiskt. Andra bladet visar vilka delar ur startkitet vi faktiskt använder.
+
+Vi köpte ett startkit istället för lösa komponenter. Kitet innehåller Pico:n, kopplingsdäcket,
+kablarna, lysdioderna och motstånden, och blev billigare än att beställa delarna var för sig.
+Sensorn ingick inte, den köpte vi separat.
 
 ![kopplingen på kopplingsdäcket](bilder/kopplingsschema.jpg)
 
