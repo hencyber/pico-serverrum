@@ -1,7 +1,6 @@
 import paho.mqtt.client as mqtt
 import json
 import os
-import time
 from utils.connect_postgres import query_db
 
 MQTT_BROKER = os.getenv("MQTT_BROKER", "mosquitto")
