@@ -46,8 +46,6 @@ def on_message(client, userdata, message):
 
 
 if __name__ == "__main__":
-    # the database container needs a few seconds before it accepts connections
-    time.sleep(5)
     create_table()
 
     client = mqtt.Client()
