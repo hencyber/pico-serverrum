@@ -16,8 +16,11 @@ services:
       - .env
     restart: on-failure
     depends_on:
-      - timescaledb
-      - mosquitto
+      timescaledb:
+        condition: service_healthy
+      mosquitto:
+        condition: service_started
+      
 
   timescaledb:
     image: timescale/timescaledb:latest-pg18
@@ -30,6 +33,11 @@ services:
       - "5432:5432"
     volumes:
       - timescale_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   grafana:
     image: grafana/grafana:latest
