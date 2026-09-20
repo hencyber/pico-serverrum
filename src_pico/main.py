@@ -44,10 +44,34 @@ def show_status(status, seconds):
         status_led.value(0)
 
 
+def show_networks():
+    # the pico radio only uses channel 1 to 11. if the network sits on 12 or 13
+    # it is invisible here no matter how strong the signal is, so we print what
+    # we can actually see to make that obvious
+    import network
+
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+    print("Networks the pico can see:")
+    found = False
+    for ssid, bssid, channel, rssi, auth, hidden in wlan.scan():
+        name = ssid.decode("utf-8", "replace")
+        if name:
+            print(f"   {name}  channel {channel}  {rssi} dBm")
+        if name == config["WIFI_SSID"]:
+            found = True
+
+    if not found:
+        print("The network in wifi_credentials.json is NOT in the list.")
+        print("Either the name is wrong or the network is on channel 12 or 13.")
+        print("Turn the hotspot off and on so it picks another channel.")
+
+
 def wait_for_wifi():
     # the radio needs time after power on, connecting again too early restarts it
     while not connect_wifi(WIFI_TRIES):
         print("Wifi did not answer, trying again")
+        show_networks()
 
 
 def connect_mqtt():
