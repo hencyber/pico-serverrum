@@ -31,7 +31,8 @@ Välj två eller tre och beskriv vad som hände och hur ni löste det. Exempel f
 
 - DHT11:an svarar inte varje gång (löstes med try/except)
 - Mosquitto släppte inte in Pico:n (egen mosquitto.conf)
-- consumern startade före databasen (sleep + restart: on-failure)
+- consumern startade före databasen (löstes med healthcheck i docker compose)
+- consumern tappade prenumerationen vid återanslutning och pipelinen tystnade
 
 ### 4. Individuell reflektion (en halv till en sida)
 
