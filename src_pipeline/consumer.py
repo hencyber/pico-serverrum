@@ -44,12 +44,19 @@ def on_message(client, userdata, message):
     print(f"saved: {device_id} {temperature}°C {humidity}% {status}")
 
 
+def on_connect(client, userdata, flags, rc):
+    # we subscribe here and not once at the start, because paho drops the
+    # subscription when it reconnects. without this the consumer stays
+    # connected but stops receiving anything
+    print(f"Connected to mosquitto, listening on topic {TOPIC}")
+    client.subscribe(TOPIC)
+
+
 if __name__ == "__main__":
     create_table()
 
     client = mqtt.Client()
-    client.connect(MQTT_BROKER, 1883)
-    client.subscribe(TOPIC)
+    client.on_connect = on_connect
     client.on_message = on_message
-    print(f"Listening on topic {TOPIC}")
+    client.connect(MQTT_BROKER, 1883)
     client.loop_forever()
