@@ -7,10 +7,15 @@ import json
 
 time.sleep(.5)
 
+with open("wifi_credentials.json") as file:
+    config = json.load(file)
+
 sensor = DHT11(Pin(16))
 status_led = Pin(15, Pin.OUT)
 
-MQTT_BROKER = "10.200.84.248"
+# the broker address changes every time we switch network, so we keep it in
+# wifi_credentials.json instead of here. that file is not in git
+MQTT_BROKER = config["MQTT_BROKER"]
 TOPIC = b"pico/serverroom/dht11"
 DEVICE_ID = "pico-serverroom-01"
 
