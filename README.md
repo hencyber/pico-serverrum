@@ -128,7 +128,9 @@ Simuleringen kör samma logik som den riktiga enheten och skriver ut mätvärden
    > tänker på det, och då ser Pico:n inte samma nät fastän det heter likadant. Skriv också
    > av nätverksnamnet exakt. Vår telefons hotspot heter `Slutalåna mobil ` med ett
    > mellanslag på slutet, och utan det mellanslaget hittas nätet inte alls.
-3. Ändra `MQTT_BROKER` i `src_pico/main.py` till IP-adressen för datorn som kör Docker.
+3. Fyll även i `MQTT_BROKER` i samma fil. Det är IP-adressen till datorn som kör Docker,
+   den får man fram med `hostname -I`. Adressen ligger i konfigfilen och inte i koden, så
+   den behöver aldrig committas.
 4. Ladda upp hela `src_pico/`-mappen till Pico:n med MicroPico i VS Code.
 
 ### 2. Pipelinen
@@ -176,9 +178,17 @@ kunna skilja på "allt är lugnt" och "jag hör ingenting".
 - Mosquitto i Docker släpper som standard bara in anslutningar från samma maskin. Vi la till
   en egen `mosquitto.conf` med `listener 1883` och `allow_anonymous true` för att Pico:n
   skulle komma in.
-- Consumern startade snabbare än databasen första gången och kraschade. Vi löste det med en
-  `time.sleep(5)` i början och `restart: on-failure` i docker compose.
+- Consumern startade snabbare än databasen första gången och kraschade. Först löste vi det
+  med en väntetid på fem sekunder, men det är bara en gissning om hur länge databasen
+  behöver. Nu har timescaledb en `healthcheck` med `pg_isready` och consumern väntar på att
+  den faktiskt svarar.
 - DHT11:an ger bara heltal, så temperaturen hoppar med ett helt grader i taget i grafen.
+- Den luriga buggen: pipelinen tystnade över natten utan att något såg trasigt ut. Alla
+  containrar körde, Pico:n skrev att den skickade och mosquitto loggade anslutningar, men
+  ingenting hamnade i databasen. Vi anropade `client.subscribe()` en gång innan
+  `loop_forever()`, och när paho återansluter återställs inte prenumerationen. Consumern var
+  alltså uppkopplad men lyssnade på ingenting. Nu prenumererar vi i en `on_connect`-callback
+  istället, så det sker vid varje anslutning.
 - Den värsta buggen: när Pico:n startar från strömpåslag hinner wifi-radion inte ansluta
   inom de 20 sekunder kurskodens `connect_wifi` väntar. Vår första version kastade då ett
   exception och gav upp för gott, så enheten var död tills man körde igång den för hand. Att

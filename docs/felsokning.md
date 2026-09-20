@@ -58,3 +58,84 @@ try:
 except OSError:
     print("Could not read the sensor, trying again")
 ```
+
+---
+
+## 4. Pico:n släpps inte in i Mosquitto
+
+### Symptom
+
+Brokern startade utan fel, men Pico:n kom aldrig fram. Inga anslutningar syntes i loggen.
+
+### Orsak
+
+Eclipse-mosquitto släpper som standard bara in klienter från samma maskin. Det syns inte
+förrän någon försöker ansluta utifrån.
+
+### Lösning
+
+Vi la till en egen `mosquitto.conf` som monteras in i containern:
+
+```
+listener 1883
+allow_anonymous true
+```
+
+---
+
+## 5. Consumern slutar ta emot efter en återanslutning
+
+### Symptom
+
+Det här var den luriga. Pipelinen tystnade över natten utan att något såg trasigt ut. Alla
+containrar körde, Pico:n skrev `sent: ... to mosquitto` och mosquitto loggade anslutningar,
+men ingenting hamnade i databasen.
+
+### Orsak
+
+Vi anropade `client.subscribe()` en gång innan `loop_forever()`. När paho tappar kontakten
+och återansluter återställs inte prenumerationen. Consumern var alltså uppkopplad men
+lyssnade på ingenting, och det syns ingenstans i loggen.
+
+### Lösning
+
+Prenumerera i en `on_connect`-callback istället, så att det sker vid varje anslutning:
+
+```python
+def on_connect(client, userdata, flags, rc):
+    client.subscribe(TOPIC)
+```
+
+### Så upptäcker man det
+
+Panelen **Mätvärden senaste minuten** i Grafana blir röd och visar noll, medan de andra
+panelerna fortfarande visar gamla värden som ser helt normala ut.
+
+---
+
+## 6. Grafana visar No data trots att databasen är full
+
+### Symptom
+
+Databasen hade tusentals rader och API:et svarade korrekt på testfrågor, men varje panel i
+webbläsaren var tom.
+
+### Orsak
+
+Databasnamnet låg i fältet `database` medan Grafana läser det från `jsonData`. Serversidan
+byggde sin egen anslutningssträng och fungerade, så felet fanns bara i webbläsarens
+datakälla. Panelerna skickade aldrig några frågor alls.
+
+### Lösning
+
+Flytta databasnamnet till `jsonData` i provisioning-filen:
+
+```yaml
+jsonData:
+  database: $POSTGRES_DB
+```
+
+### Lärdom
+
+Ett API-test som går förbi frontend bevisar inte att gränssnittet fungerar. Vi trodde länge
+att systemet var friskt eftersom våra kontroller aldrig gick samma väg som webbläsaren.
