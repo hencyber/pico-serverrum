@@ -61,6 +61,8 @@ update readme with grafana screenshot
 - Tydliga variabelnamn på engelska i koden, kommentarer och dokumentation på svenska eller
   engelska, men samma inom en fil.
 - DRY: upprepar vi oss tre gånger så bryter vi ut det till en funktion.
+- Rensa EXIF-datan från foton innan de läggs upp. Mobilkameror sparar GPS-koordinater i
+  bilden, och repot är publikt.
 - Inga lösenord eller WiFi-uppgifter i repot. De ligger i `.env` och
   `wifi_credentials.json` som båda är i `.gitignore`.
 
