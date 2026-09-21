@@ -1,4 +1,4 @@
-﻿# piCo Serverrumsvakt
+# piCo Serverrumsvakt
 
 Ett projekt i kursen Edge computing. Vi har byggt ett proof of concept åt πCo: en liten
 edge-enhet som övervakar klimatet i ett serverrum och larmar när det blir för varmt eller
@@ -25,10 +25,10 @@ innan det blir ett problem.
 
 | Komponent | Ansluten till | Rad på kopplingsdäck |
 | --------- | ------------- | -------------------- |
-| DHT11 (KY-015) data | GP16 | rad 1 |
-| DHT11 VCC | 3V3 | rad 1 |
-| DHT11 GND | GND | rad 1 |
-| Grön lysdiod (status) | GP15 via 330Ω motstånd | rad 5 |
+| DHT11 (KY-015) data | GP16 | rad 25 |
+| DHT11 VCC | 3V3 | rad 24 |
+| DHT11 GND | GND | rad 23 |
+| Grön lysdiod (status) | GP15 via 330Ω motstånd | rad 41 |
 
 Hela materiallistan med priser och motiveringar finns i [BOM_pico_serverrum.xlsx](BOM_pico_serverrum.xlsx).
 I den filen kan man ändra antalet prototyper i cell B2 så räknas antal komponenter och
@@ -119,11 +119,11 @@ Kopplingen är densamma som på vår board.
 
 ## Snabbstart
 
-`ash
+```bash
 cd src_pipeline
 cp .env.example .env
 docker compose up -d
-`
+```
 
 Skapa `src_pico/wifi_credentials.json` från exempelfilen och fyll i ert WiFi samt
 `MQTT_BROKER`, som är IP-adressen till datorn som kör Docker. Den får du med `hostname -I`.
