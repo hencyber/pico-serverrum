@@ -114,7 +114,8 @@ lysdioden är exakt densamma som på riktig hårdvara.
 
 ![wokwi-simuleringen](bilder/wokwi.png)
 
-Simuleringen kör samma logik som den riktiga enheten och skriver ut mätvärdena i konsolen.
+Kopplingen i Wokwi: Pico 2 W på kopplingsdäcket med sensorn och statuslysdioden, samma
+uppsättning som på vår riktiga board.
 
 ## Så kör man projektet
 
