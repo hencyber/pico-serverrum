@@ -23,12 +23,12 @@ innan det blir ett problem.
 
 ## Hårdvara
 
-| Komponent | Ansluten till |
-| --------- | ------------- |
-| DHT11 (KY-015) data | GP16 |
-| DHT11 VCC | 3V3 |
-| DHT11 GND | GND |
-| Grön lysdiod (status) | GP15 via 330Ω motstånd |
+| Komponent | Ansluten till | Rad på kopplingsdäck |
+| --------- | ------------- | -------------------- |
+| DHT11 (KY-015) data | GP16 | rad 25 |
+| DHT11 VCC | 3V3 | rad 24 |
+| DHT11 GND | GND | rad 23 |
+| Grön lysdiod (status) | GP15 via 330Ω motstånd | rad 41 |
 
 Hela materiallistan med priser och motiveringar finns i [BOM_pico_serverrum.xlsx](BOM_pico_serverrum.xlsx).
 I den filen kan man ändra antalet prototyper i cell B2 så räknas antal komponenter och
@@ -117,6 +117,19 @@ lysdioden är exakt densamma som på riktig hårdvara.
 Simuleringen kör samma logik som den riktiga enheten och skriver ut mätvärdena i konsolen.
 Kopplingen är densamma som på vår board.
 
+## Snabbstart
+
+```bash
+cd src_pipeline
+cp .env.example .env
+docker compose up -d
+```
+
+Skapa `src_pico/wifi_credentials.json` från exempelfilen och fyll i ert WiFi samt
+`MQTT_BROKER`, som är IP-adressen till datorn som kör Docker. Den får du med `hostname -I`.
+
+Grafana ligger sedan på http://localhost:3000.
+
 ## Så kör man projektet
 
 ### 1. Pico:n
@@ -151,6 +164,8 @@ Datakällan och dashboarden läggs in automatiskt, så dashboarden **piCo -
 Serverrumsövervakning** ska redan finnas där. Den uppdaterar sig själv var femte sekund.
 
 ![grafana-dashboarden](bilder/grafana.png)
+
+Panelerna visar senaste temperatur och luftfuktighet som KPI:er, och graferna över temperatur och luftfuktighet uppdateras live var femte sekund.
 
 Dashboarden innehåller:
 
