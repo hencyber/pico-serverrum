@@ -115,6 +115,7 @@ lysdioden är exakt densamma som på riktig hårdvara.
 ![wokwi-simuleringen](bilder/wokwi.png)
 
 Simuleringen kör samma logik som den riktiga enheten och skriver ut mätvärdena i konsolen.
+Kopplingen är densamma som på vår board.
 
 ## Så kör man projektet
 
